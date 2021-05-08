@@ -211,6 +211,7 @@ const data = [{
 ]
 
 let tableData = [];
+let modalData = [];
 
 //data part end
 
@@ -220,21 +221,30 @@ let tableData = [];
 // preparing tabel data to show
 data.forEach(function(el) {
 
-    let obj = {
+    let tableObj = {
         'Name': el.name,
         'Surname': el.surname,
         'image': el.img,
         'Salary': el.salary.value,
         'Has active loan': !el.loans.every((item) => item.closed == true),
         'Total monthly pay': !el.loans.every((item) => item.closed == true) ? el.loans.reduce((accum, el) => accum + el.perMonth.value, 0) : 0,
-        'Can apply aor loan': el.loans.reduce((accum, el) => accum + el.perMonth.value, 0) < (el.salary.value / 100) * 45 ? true : false
+        'Can apply for loan': el.loans.reduce((accum, el) => accum + el.perMonth.value, 0) < (el.salary.value / 100) * 45 ? true : false
+    }
+    let modalObj = {
+        'Loaner': el.loans[0].loaner,
+        'Amount': el.loans[0].amount.value,
+        'Has active loan': !el.loans.every((item) => item.closed == true),
+        'Monthly pay': el.loans[0].perMonth.value,
+        'Due amount': el.loans[0].dueAmount.value,
+        'Time interval': el.loans[0].loanPeriod.start + ' - ' + el.loans[0].loanPeriod.end
     }
 
-    tableData.push(obj);
+    tableData.push(tableObj);
+    modalData.push(modalObj);
 
 });
 
-console.log(tableData);
+
 
 
 // generating showing table
@@ -258,7 +268,7 @@ function generate_table() {
 
         for (var j = 0; j < Object.keys(tableData[0]).length; j++) {
             var cell = document.createElement("td");
-            Object.values(tableData[0])[j].toString().includes('https') ? cell.innerHTML = `<img src= '${Object.values(tableData[0])[j]}'>` : cell.innerHTML = Object.values(tableData[0])[j];
+            Object.values(tableData[i])[j].toString().includes('https') ? cell.innerHTML = `<img src= '${Object.values(tableData[i])[j]}'>` : cell.innerHTML = Object.values(tableData[i])[j];
 
             row.appendChild(cell);
         }
