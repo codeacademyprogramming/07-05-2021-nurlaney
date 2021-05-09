@@ -210,6 +210,80 @@ const data = [{
         "surname": "Stanley",
         "hasSalaryCard": true,
         "hasLoanHistory": true
+    },
+    {
+        "id": 4,
+        "img": "https://randomuser.me/api/portraits/men/44.jpg",
+        "name": "Eden",
+        "loans": [{
+            "amount": {
+                "value": 11000,
+                "currency": "AZN"
+            },
+            "closed": false,
+            "loaner": "DreamFin",
+            "period": {
+                "type": "month",
+                "value": 24
+            },
+            "perMonth": {
+                "value": 300,
+                "currency": "AZN"
+            },
+            "dueAmount": {
+                "value": 0,
+                "currency": "AZN"
+            },
+            "loanPeriod": {
+                "end": "27.04.2023",
+                "start": "27.04.2021"
+            },
+            "interestRate": 17
+        }],
+        "salary": {
+            "value": 1300,
+            "currency": "AZN"
+        },
+        "surname": "Hazard",
+        "hasSalaryCard": true,
+        "hasLoanHistory": true
+    },
+    {
+        "id": 5,
+        "img": "https://randomuser.me/api/portraits/men/46.jpg",
+        "name": "Harry",
+        "loans": [{
+            "amount": {
+                "value": 18000,
+                "currency": "AZN"
+            },
+            "closed": false,
+            "loaner": "DreamFin",
+            "period": {
+                "type": "month",
+                "value": 23
+            },
+            "perMonth": {
+                "value": 950,
+                "currency": "AZN"
+            },
+            "dueAmount": {
+                "value": 0,
+                "currency": "AZN"
+            },
+            "loanPeriod": {
+                "end": "27.04.2023",
+                "start": "27.04.2021"
+            },
+            "interestRate": 17
+        }],
+        "salary": {
+            "value": 555,
+            "currency": "AZN"
+        },
+        "surname": "Kane",
+        "hasSalaryCard": true,
+        "hasLoanHistory": true
     }
 ]
 
@@ -223,11 +297,8 @@ var body = document.getElementsByTagName("body")[0];
 var isSorted = false;
 var isSortedActive = false;
 
-
-
 // preparing table data to show
 data.forEach(function(el) {
-
     let tableObj = {
         'id': el.id,
         'Name': el.name,
@@ -248,17 +319,9 @@ data.forEach(function(el) {
         'Due amount': el.loans[0].dueAmount.value + ' AZN',
         'Time interval': el.loans[0].loanPeriod.start + ' - ' + el.loans[0].loanPeriod.end
     }
-
     tableData.push(tableObj);
     modalData.push(modalObj);
-
-
-
-
-
 });
-
-
 
 // generating showing table
 function generate_table() {
