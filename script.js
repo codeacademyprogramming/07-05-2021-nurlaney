@@ -401,7 +401,7 @@ activeSort.addEventListener('click', function() {
 //filter event
 
 //find id of clicked row
-document.querySelector('#tableBody').addEventListener('click', function(e) {
+document.querySelector('#container').addEventListener('click', function(e) {
     let target = e.target;
     let rowId = target.parentElement.id
     if (target.innerHTML == 'View Loan History') {
