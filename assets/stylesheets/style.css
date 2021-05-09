@@ -1,3 +1,4 @@
+@import url("https://fonts.googleapis.com/css2?family=Newsreader&display=swap");
 .row {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -738,6 +739,12 @@
 
 body {
   margin: 0;
+  background-color: #1f2739;
+}
+
+th,
+td {
+  color: #eae2cf;
 }
 
 ul {
@@ -757,38 +764,126 @@ img {
 }
 
 table {
+  font-family: 'Newsreader', serif;
   width: 100%;
-  padding: 20px;
-  border: 1px solid;
+  padding: 15px;
+  margin-top: 5%;
+  -webkit-box-shadow: 0px 1px 5px 0px rgba(0, 0, 0, 0.75);
+          box-shadow: 0px 1px 5px 0px rgba(0, 0, 0, 0.75);
+  max-height: 500px;
+  overflow-y: auto;
+}
+
+table thead th {
+  padding: 10px;
+  font-size: 14px;
 }
 
 table tbody {
   text-align: center;
 }
 
-table td {
-  border: 1px solid;
+table tbody img {
+  width: 45%;
+  border-radius: 50%;
+}
+
+table tr {
+  -webkit-transition: all 0.4s;
+  transition: all 0.4s;
+}
+
+table tr:nth-child(even) {
+  background-color: #1e2431;
+}
+
+table tr:hover {
+  background-color: #1a1f2b;
+}
+
+table tr td {
+  border-bottom: 1px solid #525252;
+}
+
+table tr td:last-child {
+  background-color: #352335;
+  border-radius: 10px 0px 0px 0px;
+  cursor: pointer;
+}
+
+table tr td:hover {
+  background-color: #1d2330;
 }
 
 #modal {
   position: fixed;
   padding: 20px;
-  border: 1px solid;
   z-index: 1;
-  left: calc(100vw - 75%);
-  background-color: white;
-  width: 50%;
+  left: calc(100vw - 85%);
+  top: 10%;
+  background-color: #1f2739;
+  width: 70%;
+}
+
+#modal #times {
+  color: white;
+  cursor: pointer;
+  position: absolute;
+  right: 20px;
+  top: 10px;
+  font-family: monospace;
+  font-size: 15px;
 }
 
 #modal .modal-content {
   padding: 15px;
+  padding-top: 0;
+}
+
+#modal .modal-content table {
+  -webkit-box-shadow: none;
+          box-shadow: none;
+  padding: 0;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+#modal .modal-content table th {
+  font-size: 12px;
+}
+
+#modal .modal-content table td {
+  font-size: 14px;
+  padding: 10px;
+}
+
+#modal .modal-header h4 {
+  color: #eae2cf;
+  text-align: center;
+  font-size: 25px;
+  margin: 0;
 }
 
 .overlay {
-  width: 100%;
-  background-color: black;
+  width: 100vw;
   background-color: rgba(0, 0, 0, 0.4);
   height: 100vh;
   position: absolute;
+  -webkit-backdrop-filter: blur(6px);
+          backdrop-filter: blur(6px);
+}
+
+button {
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  color: #eae2cf;
+  background-color: #352335;
+  -webkit-transition: all 0.4s;
+  transition: all 0.4s;
+}
+
+button:hover {
+  background-color: #1d2330;
 }
 /*# sourceMappingURL=style.css.map */

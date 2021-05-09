@@ -233,19 +233,19 @@ data.forEach(function(el) {
         'Name': el.name,
         'Surname': el.surname,
         'image': el.img,
-        'Salary': el.salary.value,
+        'Salary': el.salary.value + ' ' + el.salary.currency,
         'Hasactiveloan': !el.loans.every((item) => item.closed == true),
-        'Total monthly pay': !el.loans.every((item) => item.closed == true) ? el.loans.reduce((accum, el) => accum + el.perMonth.value, 0) : 0,
+        'Total monthly pay': !el.loans.every((item) => item.closed == true) ? el.loans.reduce((accum, el) => accum + el.perMonth.value, 0) + ' AZN' : 0,
         'Can apply for loan': el.loans.reduce((accum, el) => accum + el.perMonth.value, 0) < (el.salary.value / 100) * 45 ? true : false,
         '': 'View Loan History'
     }
     let modalObj = {
         'CustomerId': el.id,
         'Loaner': el.loans[0].loaner,
-        'Amount': el.loans[0].amount.value,
+        'Amount': el.loans[0].amount.value + ' AZN',
         'Has active loan': !el.loans.every((item) => item.closed == true),
-        'Monthly pay': el.loans[0].perMonth.value,
-        'Due amount': el.loans[0].dueAmount.value,
+        'Monthly pay': el.loans[0].perMonth.value + ' AZN',
+        'Due amount': el.loans[0].dueAmount.value + ' AZN',
         'Time interval': el.loans[0].loanPeriod.start + ' - ' + el.loans[0].loanPeriod.end
     }
 
@@ -353,6 +353,7 @@ function generate_modal_table(id) {
     document.getElementById('modal').classList.remove('d-none')
     document.getElementById('modal').classList.add('d-block')
     var modal_table = document.createElement("table");
+    modal_table.setAttribute('id', 'modalTable');
     var modal_theader = document.createElement('thead');
     var modal_tableBody = document.createElement("tbody");
 
@@ -379,3 +380,21 @@ function generate_modal_table(id) {
     modal_table.appendChild(modal_tableBody);
     modal.appendChild(modal_table);
 }
+
+//modal close functions
+document.getElementById('overlay').addEventListener('click', function() {
+    document.getElementById('overlay').classList.remove('d-block')
+    document.getElementById('overlay').classList.add('d-none')
+    document.getElementById('modal').classList.remove('d-block')
+    document.getElementById('modal').classList.add('d-none')
+    var table = document.getElementById('modalTable');
+    table.parentNode.removeChild(table);
+});
+document.getElementById('times').addEventListener('click', function() {
+    document.getElementById('overlay').classList.remove('d-block')
+    document.getElementById('overlay').classList.add('d-none')
+    document.getElementById('modal').classList.remove('d-block')
+    document.getElementById('modal').classList.add('d-none')
+    var table = document.getElementById('modalTable');
+    table.parentNode.removeChild(table);
+});
