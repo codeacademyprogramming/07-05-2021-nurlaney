@@ -748,11 +748,18 @@ img {
   cursor: pointer;
 }
 
+.d-none {
+  display: none;
+}
+
+.d-block {
+  display: block;
+}
+
 table {
   width: 100%;
   padding: 20px;
   border: 1px solid;
-  margin-top: 100px;
 }
 
 table tbody {
@@ -761,5 +768,27 @@ table tbody {
 
 table td {
   border: 1px solid;
+}
+
+#modal {
+  position: fixed;
+  padding: 20px;
+  border: 1px solid;
+  z-index: 1;
+  left: calc(100vw - 75%);
+  background-color: white;
+  width: 50%;
+}
+
+#modal .modal-content {
+  padding: 15px;
+}
+
+.overlay {
+  width: 100%;
+  background-color: black;
+  background-color: rgba(0, 0, 0, 0.4);
+  height: 100vh;
+  position: absolute;
 }
 /*# sourceMappingURL=style.css.map */

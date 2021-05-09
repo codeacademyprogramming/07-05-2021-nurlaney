@@ -1,4 +1,5 @@
 const data = [{
+        "id": 1,
         "img": "https://randomuser.me/api/portraits/men/42.jpg",
         "name": "Jesus",
         "loans": [{
@@ -86,6 +87,7 @@ const data = [{
         "hasLoanHistory": true
     },
     {
+        "id": 2,
         "img": "https://randomuser.me/api/portraits/women/88.jpg",
         "name": "Kylie",
         "loans": [{
@@ -173,6 +175,7 @@ const data = [{
         "hasLoanHistory": true
     },
     {
+        "id": 3,
         "img": "https://randomuser.me/api/portraits/men/22.jpg",
         "name": "Clarence",
         "loans": [{
@@ -212,25 +215,32 @@ const data = [{
 
 let tableData = [];
 let modalData = [];
-
 //data part end
 
+//g variables
+var modal = document.getElementById('modal-content');
+var body = document.getElementsByTagName("body")[0];
+var isSorted = false;
+var isSortedActive = false;
 
 
 
-// preparing tabel data to show
+// preparing table data to show
 data.forEach(function(el) {
 
     let tableObj = {
+        'id': el.id,
         'Name': el.name,
         'Surname': el.surname,
         'image': el.img,
         'Salary': el.salary.value,
-        'Has active loan': !el.loans.every((item) => item.closed == true),
+        'Hasactiveloan': !el.loans.every((item) => item.closed == true),
         'Total monthly pay': !el.loans.every((item) => item.closed == true) ? el.loans.reduce((accum, el) => accum + el.perMonth.value, 0) : 0,
-        'Can apply for loan': el.loans.reduce((accum, el) => accum + el.perMonth.value, 0) < (el.salary.value / 100) * 45 ? true : false
+        'Can apply for loan': el.loans.reduce((accum, el) => accum + el.perMonth.value, 0) < (el.salary.value / 100) * 45 ? true : false,
+        '': 'View Loan History'
     }
     let modalObj = {
+        'CustomerId': el.id,
         'Loaner': el.loans[0].loaner,
         'Amount': el.loans[0].amount.value,
         'Has active loan': !el.loans.every((item) => item.closed == true),
@@ -242,41 +252,130 @@ data.forEach(function(el) {
     tableData.push(tableObj);
     modalData.push(modalObj);
 
-});
 
+
+
+
+});
 
 
 
 // generating showing table
 function generate_table() {
-    var body = document.getElementsByTagName("body")[0];
+    var body_table = document.createElement("table");
+    body_table.setAttribute('id', 'bigTable');
+    var body_theader = document.createElement('thead');
+    var body_tableBody = document.createElement("tbody");
+    body_tableBody.setAttribute('id', 'tableBody');
 
-    var tbl = document.createElement("table");
-    var theader = document.createElement('thead');
-    var tblBody = document.createElement("tbody");
-
+    var body_thead_row = document.createElement("tr");
 
     for (var b = 0; b < Object.keys(tableData[0]).length; b++) {
         var th = document.createElement('th');
-        th.innerHTML = Object.keys(tableData[0])[b]
-        theader.appendChild(th);
-        tbl.appendChild(theader);
+        th.innerHTML = Object.keys(tableData[0])[b];
+        body_thead_row.appendChild(th);
+        body_theader.appendChild(body_thead_row);
+        body_table.appendChild(body_theader);
     }
 
-    for (var i = 0; i < tableData.length; i++) {
-        var row = document.createElement("tr");
 
+    for (var i = 0; i < tableData.length; i++) {
+        var body_tbody_row = document.createElement("tr");
+        body_tbody_row.setAttribute('id', `${tableData[i].id}`)
+        body_tbody_row.setAttribute('class', 'tableRow')
         for (var j = 0; j < Object.keys(tableData[0]).length; j++) {
             var cell = document.createElement("td");
             Object.values(tableData[i])[j].toString().includes('https') ? cell.innerHTML = `<img src= '${Object.values(tableData[i])[j]}'>` : cell.innerHTML = Object.values(tableData[i])[j];
-
-            row.appendChild(cell);
+            body_tbody_row.appendChild(cell);
         }
 
-        tblBody.appendChild(row);
+        body_tableBody.appendChild(body_tbody_row);
+
     }
 
-    tbl.appendChild(tblBody);
-    body.appendChild(tbl);
+    body_table.appendChild(body_tableBody);
+    document.getElementById('container').appendChild(body_table);
 }
-generate_table()
+
+generate_table();
+
+//filter event
+let oldData = tableData.slice();
+var nameSort = document.getElementById('nameSort');
+var activeSort = document.getElementById('activeSort');
+nameSort.addEventListener('click', function() {
+    if (!isSorted) {
+        tableData.sort(function(a, b) { return (a.Name > b.Name) ? 1 : ((b.Name > a.Name) ? -1 : 0); });
+        isSorted = true;
+        var table = document.getElementById('bigTable');
+        table.parentNode.removeChild(table);
+        generate_table();
+    } else {
+        tableData = oldData;
+        isSorted = false;
+        var table = document.getElementById('bigTable');
+        table.parentNode.removeChild(table);
+        generate_table();
+        oldData = tableData.slice();
+    }
+});
+activeSort.addEventListener('click', function() {
+    if (!isSortedActive) {
+        tableData.sort(function(a, b) { return (a.Hasactiveloan < b.Hasactiveloan) ? 1 : ((b.Hasactiveloan < a.Hasactiveloan) ? -1 : 0); });
+        isSortedActive = true;
+        var table = document.getElementById('bigTable');
+        table.parentNode.removeChild(table);
+        generate_table();
+    } else {
+        tableData = oldData;
+        isSortedActive = false;
+        var table = document.getElementById('bigTable');
+        table.parentNode.removeChild(table);
+        generate_table();
+        oldData = tableData.slice();
+    }
+});
+//filter event
+
+//find id of clicked row
+document.querySelector('#tableBody').addEventListener('click', function(e) {
+    let target = e.target;
+    let rowId = target.parentElement.id
+    if (target.innerHTML == 'View Loan History') {
+        generate_modal_table(rowId);
+    }
+});
+
+//generate modal table
+function generate_modal_table(id) {
+    document.getElementById('overlay').classList.remove('d-none')
+    document.getElementById('overlay').classList.add('d-block')
+    document.getElementById('modal').classList.remove('d-none')
+    document.getElementById('modal').classList.add('d-block')
+    var modal_table = document.createElement("table");
+    var modal_theader = document.createElement('thead');
+    var modal_tableBody = document.createElement("tbody");
+
+    var modal_thead_row = document.createElement("tr");
+
+    for (var b = 0; b < Object.keys(modalData[0]).length; b++) {
+        var th = document.createElement('th');
+        th.innerHTML = Object.keys(modalData[0])[b];
+        modal_thead_row.appendChild(th);
+        modal_theader.appendChild(modal_thead_row);
+        modal_table.appendChild(modal_theader);
+    }
+    var modal_tbody_row = document.createElement("tr");
+
+    for (var j = 0; j < Object.keys(modalData[0]).length; j++) {
+        var cell = document.createElement("td");
+        cell.innerHTML = Object.values(modalData.filter(x => x.CustomerId == id)[0])[j]
+
+        modal_tbody_row.appendChild(cell);
+    }
+
+    modal_tableBody.appendChild(modal_tbody_row);
+
+    modal_table.appendChild(modal_tableBody);
+    modal.appendChild(modal_table);
+}
